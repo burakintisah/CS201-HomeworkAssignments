@@ -1,0 +1,51 @@
+ACS.cpp*******
+
+void ACS::displayAuthor(int authorID) {
+	string authorName = "";
+	string detail = "";
+	for (Node* cur = head; cur != NULL; cur = cur->next) {
+		string paperDetail = cur->t.authorDetail(authorID, authorName);
+		if (paperDetail != "") {
+			detail += "Track " + cur->t.getTrackName() + "\n";
+			detail += paperDetail;
+		}
+	}
+	if (authorName != "" && detail != "") {
+		cout << "Author " << authorID << " , Author " << authorName << endl;
+		cout << detail;
+	}
+	else {
+		cout << "-- EMPTY --" << endl;
+	}
+
+}
+
+Track.cpp*****
+
+string Track::authorDetail(const int id, string & authorName) {
+	string paperName = "";
+	string detail = "";
+	for (PaperNode* cur = head; cur != NULL; cur = cur->next) {
+		if (cur->p.authorExist(id, paperName, authorName)) {
+			detail = detail + "	Paper " + paperName + "\n";
+		}
+	}
+	return detail;
+}
+
+Paper.cpp**********
+
+bool Paper::authorExist(const int id, string & paperName, string & authorName) {
+	AuthorNode* theAuthor;
+	theAuthor = findAuthor(id);
+	if (theAuthor != NULL) {
+		if(authorName == "")
+			authorName = theAuthor->a.getName();
+		paperName = name;
+		return true;
+	}
+	else {
+		paperName = "";
+		return false;
+	}
+}
